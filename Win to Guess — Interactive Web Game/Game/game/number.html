@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess to Win | Phase 1 - Firewall Code</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="number-game-page">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">Guess to Win</div>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../leaderboard/leaderboard.html">Leaderboard</a>
+      <a href="../settings/settings.html">Settings</a>
+    </div>
+  </nav>
+
+  <!-- Main Game Container -->
+  <main class="game-container">
+    <h1>Phase 1: Firewall Code</h1>
+
+    <!-- Difficulty Level Display -->
+    <div class="info-box">
+      <strong>Difficulty:</strong> <span id="difficulty">Easy</span>
+    </div>
+
+    <!-- Range Display -->
+    <div class="info-box">
+      <strong>Number Range:</strong> <span id="number-range">1 - 50</span>
+    </div>
+
+    <!-- Lives Display -->
+    <div class="info-box">
+      <strong>Lives Remaining:</strong> <span id="lives">5</span>
+    </div>
+
+    <!-- Timer Display -->
+    <div class="info-box">
+        <strong>Time Remaining:</strong> <span id="timer-display">0</span>s
+    </div>
+
+
+    <!-- Instructions -->
+    <div class="instructions">
+      <p>
+        Guess the firewall code! Enter a number within the given range based on your difficulty. 
+        You have limited lives. Hints will be provided after each guess.
+      </p>
+    </div>
+
+    <!-- Guess Input Section -->
+    <div class="guess-section">
+      <input type="number" id="guess-input" placeholder="Enter your guess">
+      <button id="guess-btn">Guess</button>
+    </div>
+
+    <!-- Feedback / Message Box -->
+    <div id="messageBox" class="message-box">
+      <!-- Messages like "Too high!", "Too low!", or "Correct!" will appear here -->
+    </div>
+  </main>
+    
+  <footer>
+    <p>© 2025 GuessToWin | Designed by noor</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

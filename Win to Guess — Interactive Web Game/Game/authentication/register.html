@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Guess to Win</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/main.js" defer></script>
+</head>
+<body class="register-page">
+  <header>
+    <nav class="navbar">
+      <div class="logo">💻 Guess<span>ToWin</span></div>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html" class="active">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="hero-section">
+    <div class="hero-content">
+      <h1>Join the Mission</h1>
+      <p class="mission-text">
+        Create your hacker profile and get ready to infiltrate the system.
+      </p>
+
+      <!-- Registration Form -->
+        <form id="registerForm" class="register-card">
+        <div class="input-group">
+          <input type="text" id="name" placeholder="Full Name" required>
+        </div>
+
+        <div class="input-group">
+          <input type="text" id="nickname" placeholder="Nickname" required>
+        </div>
+
+        <div class="input-group">
+          <input type="text" id="city" placeholder="City" required>
+        </div>
+
+        <div class="input-group">
+          <input type="text" id="country" placeholder="Country" required>
+        </div>
+
+        <div class="input-group">
+          <input type="tel" id="phone" placeholder="Phone Number" required>
+        </div>
+
+        <div class="input-group">
+          <select id="role" required>
+            <option value="" disabled selected>Select Your Hacking Level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <input type="email" id="email" placeholder="Email" required>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+      
+      <div id="messageBox" class="message hidden" style="margin-top:10px;"></div>
+      
+      <p class="mission-text">
+        Already have an account? <a href="login.html" style="color:#ee9b00;">Login here</a>
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 GuessToWin | Designed by noor</p>
+  </footer>
+</body>
+</html>

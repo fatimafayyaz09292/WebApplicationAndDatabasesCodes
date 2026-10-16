@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard | Guess to Win</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/main.js" defer></script>
+</head>
+<body class="leaderboard-page">
+  <!-- ===== Header ===== -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">💻 Guess<span>ToWin</span></div>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../authentication/login.html">Login</a></li>
+        <li><a href="../authentication/register.html">Register</a></li>
+        <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ===== Leaderboard Section ===== -->
+  <main class="leaderboard-section">
+  <h1>Leaderboard</h1>
+
+  <!-- Personal Score -->
+  <div class="personal-score">
+    <h2>Your Score</h2>
+    <div id="personalScoreBox" class="score-box">
+      <!-- Filled dynamically via JS -->
+    </div>
+  </div>
+
+  <!-- Global Leaderboard -->
+  <div class="global-leaderboard">
+    <h2>Global Scores</h2>
+    <table id="leaderboardTable">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled dynamically via JS -->
+      </tbody>
+    </table>
+  </div>
+</main>
+
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <p>© 2025 GuessToWin | Designed by noor</p>
+  </footer>
+</body>
+</html>

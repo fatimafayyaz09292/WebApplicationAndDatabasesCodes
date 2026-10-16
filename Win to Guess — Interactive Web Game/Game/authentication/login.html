@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Guess to Win</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/main.js" defer></script>
+</head>
+<body class="login-page">
+  <header>
+    <nav class="navbar">
+      <div class="logo">💻 Guess<span>ToWin</span></div>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="login.html" class="active">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome Back, Hacker</h1>
+      <p class="mission-text">Login to continue your mission and crack the system!</p>
+
+      <!-- Login Form -->
+    <div class="login-card">
+      <form id="loginForm" class="login-form">
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+
+             <div class="extra-options">
+                <label>
+                     <input type="checkbox" id="rememberMe">
+                     Remember Me
+                </label>
+             </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="button" id="guestBtn" class="btn btn-secondary">Play as Guest</button>
+      </form>
+      <div id="loginMessage" class="message hidden"></div>
+    </div>
+      <p class="mission-text">
+        Don't have an account? <a href="register.html" style="color:#ee9b00;">Register here</a>
+      </p>
+    </div>
+</main>
+
+  <footer>
+    <p>© 2025 GuessToWin | Designed by noor</p>
+  </footer>
+</body>
+</html>

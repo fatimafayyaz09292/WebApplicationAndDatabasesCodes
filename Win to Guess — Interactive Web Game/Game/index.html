@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess to Win | Hacker Simulation Game</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- ===== Header & Navigation ===== -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">💻 Guess to Win</div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="authentication/login.html">Login</a></li>
+        <li><a href="authentication/register.html">Register</a></li>
+        <li><a href="leaderboard/leaderboard.html">Leaderboard</a></li>
+        <li><a href="settings/settings.html">Settings</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ===== Hero Section ===== -->
+  <main class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome, Agent</h1>
+      <p class="mission-text">
+        You are about to infiltrate a secure digital vault.  
+        Crack the firewall code. Guess the password.  
+        Survive the system defenses. Fail, and get locked out.
+      </p>
+
+      <div class="action-buttons">
+        <a id="loginBtn" href="authentication/login.html" class="btn">Login</a>
+        <a id="registerBtn" href="authentication/register.html" class="btn secondary">Register</a>
+        <button id="guestBtn" class="btn start">▶ Play as Guest</button>
+        <button id="startGameBtn" class="btn start hidden">▶ Start Mission</button>
+      </div>
+
+      <div id="messageBox" class="message hidden"></div>
+    </div>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <p>© 2025 Guess to Win | Designed by noor</p>
+  </footer>
+
+  <!-- Main JS -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

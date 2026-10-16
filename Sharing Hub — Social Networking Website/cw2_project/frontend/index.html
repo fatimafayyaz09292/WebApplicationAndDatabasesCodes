@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sharing Hub</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .container { max-width: 900px; margin-top: 30px; }
+    .hidden { display: none; }
+    .post { border: 1px solid #dee2e6; padding: 15px; margin-bottom: 15px; border-radius: 8px; background: #fff; }
+    .file-preview { max-width: 100%; margin-top: 10px; }
+    .pointer { cursor: pointer; }
+    .active-btn { background-color: #0d6efd; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Notification / message box -->
+  <div id="notification" class="alert d-none" role="alert"></div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-section">
+      <h2>Login</h2>
+      <form id="login-form">
+        <div class="mb-3">
+          <label for="login-email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="login-email" required>
+        </div>
+        <div class="mb-3">
+          <label for="login-password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="login-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <p class="mt-3">Don't have an account? <span class="text-primary pointer" onclick="showRegister()">Register</span></p>
+      </form>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-section" class="hidden">
+      <h2>Register</h2>
+      <form id="register-form" enctype="multipart/form-data">
+        <div class="mb-3"><label class="form-label">Full Name</label><input type="text" class="form-control" id="fullName" required></div>
+        <div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control" id="username" required></div>
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="email" required></div>
+        <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="password" required></div>
+        <div class="mb-3"><label class="form-label">Confirm Password</label><input type="password" class="form-control" id="confirmPassword" required></div>
+        <div class="mb-3"><label class="form-label">Date of Birth</label><input type="date" class="form-control" id="dob" required></div>
+        <div class="mb-3"><label class="form-label">Gender (optional)</label>
+          <select class="form-select" id="gender">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="form-label">Profile Picture</label><input type="file" class="form-control" id="profilePic"></div>
+        <div class="mb-3"><label class="form-label">Country / Location</label><input type="text" class="form-control" id="country" required></div>
+        <div class="mb-3"><label class="form-label">Main Interests</label>
+          <select class="form-select" id="interests" multiple>
+            <option value="Coding">Coding</option>
+            <option value="Cooking">Cooking</option>
+            <option value="Photography">Photography</option>
+            <option value="Music">Music</option>
+            <option value="Gaming">Gaming</option>
+            <option value="DIY">DIY</option>
+            <option value="Experiences">Experiences</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="form-label">Bio</label><textarea class="form-control" id="bio"></textarea></div>
+        <div class="mb-3"><label class="form-label">Skill Level</label>
+          <select class="form-select" id="skillLevel">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="form-label">Profession / Role</label><input type="text" class="form-control" id="profession" required></div>
+        <div class="mb-3"><label class="form-label">Website / Portfolio (optional)</label><input type="url" class="form-control" id="website"></div>
+        <button type="submit" class="btn btn-success">Register</button>
+        <p class="mt-3">Already have an account? <span class="text-primary pointer" onclick="showLogin()">Login</span></p>
+      </form>
+    </div>
+
+    <!-- MAIN APP SECTION -->
+    <div id="app-section" class="hidden">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Sharing Hub</h3>
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+      </div>
+
+      <div id="nav-buttons">
+        <button class="btn btn-secondary me-2" onclick="showSubSection('profile')">Profile</button>
+        <button class="btn btn-secondary me-2" onclick="showSubSection('create-post')">Create Post</button>
+        <button class="btn btn-secondary me-2" onclick="showSubSection('search')">Search</button>
+        <button class="btn btn-secondary me-2" onclick="showSubSection('feed')">Feed</button>
+
+      </div>
+    </div>
+
+<!--profile section-->
+  <div id="profile-section" class="hidden mt-3">
+  <div class="d-flex align-items-center mb-3">
+    <img id="profile-picture" src="default-avatar.png" width="100" class="rounded-circle me-3">
+    <div>
+      <h4 id="profile-name"></h4>
+      <p id="profile-bio"></p>
+      <button class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
+      <button class="btn btn-secondary btn-sm" id="share-profile-btn">Share Profile</button>
+    </div>
+  </div>
+
+  <!-- Profile Tabs -->
+  <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+    <li class="nav-item">
+      <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts">Posts</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers">Followers</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="following-tab" data-bs-toggle="tab" data-bs-target="#following">Following</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings">Settings</button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3">
+    <div class="tab-pane fade show active" id="posts"></div>
+    <div class="tab-pane fade" id="followers"></div>
+    <div class="tab-pane fade" id="following"></div>
+    <div class="tab-pane fade" id="settings">
+      <h6>Settings</h6>
+      <form id="profile-settings-form">
+        <div class="mb-2">
+          <label>Email</label>
+          <input type="email" id="settings-email" class="form-control" disabled>
+        </div>
+        <div class="mb-2">
+          <label>Username</label>
+          <input type="text" id="settings-username" class="form-control" disabled>
+        </div>
+        <div class="mb-2">
+          <label>Full Name</label>
+          <input type="text" id="settings-fullname" class="form-control">
+        </div>
+        <div class="mb-2">
+          <label>Date of Birth</label>
+          <input type="date" id="settings-dob" class="form-control">
+        </div>
+        <div class="mb-2">
+          <label>Country / Location</label>
+          <input type="text" id="settings-country" class="form-control">
+        </div>
+        <div class="mb-2">
+          <label>Gender</label>
+          <select id="settings-gender" class="form-select">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="mb-2">
+        <label>Main Interests</label>
+        <select id="settings-interests" multiple class="form-select">
+          <option value="Coding">Coding</option>
+          <option value="Cooking">Cooking</option>
+          <option value="Photography">Photography</option>
+          <option value="Music">Music</option>
+          <option value="Gaming">Gaming</option>
+          <option value="DIY">DIY</option>
+          <option value="Experiences">Experiences</option>
+        </select>
+      </div>
+      <div class="mb-2">
+        <label>Bio</label>
+        <textarea id="settings-bio" class="form-control"></textarea>
+      </div>
+      <div class="mb-2">
+        <label>Skill Level</label>
+        <select id="settings-skillLevel" class="form-select">
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Expert">Expert</option>
+        </select>
+      </div>
+      <div class="mb-2">
+        <label>Profession / Role</label>
+        <input type="text" id="settings-profession" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label>Website / Portfolio</label>
+        <input type="url" id="settings-website" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label>Change Password</label>
+        <input type="password" id="settings-newPassword" placeholder="New Password" class="form-control mb-1">
+        <input type="password" id="settings-confirmPassword" placeholder="Confirm Password" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-success btn-sm mt-2">Save Settings</button>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="editProfileModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+
+      <h5>Edit Profile</h5>
+
+      <label>Name</label>
+      <input id="edit-fullname" class="form-control mb-2">
+
+      <label>Bio</label>
+      <textarea id="edit-bio" class="form-control mb-2"></textarea>
+
+      <label>Profile Picture</label>
+      <input type="file" id="edit-picture" class="form-control mb-2">
+
+      <button class="btn btn-success" onclick="updateProfile()">Save Changes</button>
+      <button class="btn btn-warning" onclick="uploadProfilePicture()">Upload Picture</button>
+
+    </div>
+  </div>
+</div>
+
+      <!-- CREATE POST -->
+      <div id="create-post-section" class="mb-4 hidden">
+        <h5>Create Post</h5>
+        <form id="post-form" enctype="multipart/form-data">
+          <textarea class="form-control" name="content" id="postContent" placeholder="Write something..." required></textarea>
+          <input type="file" class="form-control" name="files" id="postFile" multiple>
+          <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+      
+      </div>
+
+      <!-- SEARCH USERS / POSTS -->
+      <div id="search-section" class="mb-4 hidden">
+        <h5>Search</h5>
+        <input type="text" class="form-control mb-2" id="searchUsers" placeholder="Search Users">
+        <input type="text" class="form-control mb-2" id="searchPosts" placeholder="Search Posts">
+        <div id="search-results"></div>
+      </div>
+
+      <!-- FEED -->
+      <div id="feed-section" class="hidden">
+        <h5>Your Feed</h5>
+        <div id="feed"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS & Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const BASE_URL = 'http://localhost:8080/M01088037';
+
+  // Hide all app sections initially on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('app-section').classList.add('hidden');
+    document.getElementById('profile-section').classList.add('hidden');
+    document.getElementById('create-post-section').classList.add('hidden');
+    document.getElementById('search-section').classList.add('hidden');
+    document.getElementById('feed-section').classList.add('hidden');
+
+    // If user is already logged in, show app
+    const username = sessionStorage.getItem('username');
+    if (username) showApp();
+  });
+
+    // ---------- CHECK IF USER IS LOGGED IN ON PAGE LOAD ----------
+    window.addEventListener('DOMContentLoaded', async () => {
+      const username = getUsername();
+      if (username) {
+      showApp();
+       const lastSection = sessionStorage.getItem('lastSection') || 'feed';
+        showSubSection(lastSection);
+      
+      await loadProfile();
+      await loadFeed();
+    }
+  });
+  
+  let notifTimeout;
+
+  function showNotification(message, type = 'success') {
+    const notif = document.getElementById('notification');
+    notif.textContent = message;
+    notif.className = `alert alert-${type}`; // type can be 'success', 'danger', 'warning', 'info'
+    notif.classList.remove('d-none');
+    if (notifTimeout) clearTimeout(notifTimeout); // clear previous timeout
+    notifTimeout = setTimeout(() => notif.classList.add('d-none'), 3000); // hide after 3 seconds
+  }
+
+    // SECTION TOGGLE
+    function getUsername() { return sessionStorage.getItem('username'); }
+    function setUsername(username) { sessionStorage.setItem('username', username); }
+    function showRegister() { document.getElementById('login-section').classList.add('hidden'); document.getElementById('register-section').classList.remove('hidden'); }
+    function showLogin() { document.getElementById('register-section').classList.add('hidden'); document.getElementById('login-section').classList.remove('hidden'); }
+    function showApp() { document.getElementById('login-section').classList.add('hidden'); document.getElementById('register-section').classList.add('hidden'); document.getElementById('app-section').classList.remove('hidden'); }
+    function showSubSection(section) {
+      ['profile-section','create-post-section','search-section','feed-section'].forEach(id => document.getElementById(id).classList.add('hidden'));
+      if(section==='profile') document.getElementById('profile-section').classList.remove('hidden');
+      if(section==='create-post') document.getElementById('create-post-section').classList.remove('hidden');
+      if(section==='search') document.getElementById('search-section').classList.remove('hidden');
+      if(section==='feed') document.getElementById('feed-section').classList.remove('hidden');
+
+       // Update active button styling
+      const buttons = document.querySelectorAll('#nav-buttons .btn');
+      buttons.forEach(btn => btn.classList.remove('active-btn')); // remove from all
+      if(section === 'profile') buttons[0].classList.add('active-btn');
+      if(section === 'create-post') buttons[1].classList.add('active-btn');
+      if(section === 'search') buttons[2].classList.add('active-btn');
+      if(section === 'feed') buttons[3].classList.add('active-btn');
+      // Save last section in sessionStorage
+      sessionStorage.setItem('lastSection', section);
+    }
+
+    //new
+function renderPostFiles(files) {
+  if (!files?.length) return '';
+
+  return files.map(f => {
+    const ext = f.split('.').pop().toLowerCase();
+    const fileUrl = getUploadPath(f);
+
+    if (['png','jpg','jpeg','gif','webp','svg'].includes(ext)) {
+      return `<img src="${fileUrl}" class="file-preview mb-2">`;
+    } 
+    else if (['mp4','mov','webm'].includes(ext)) {
+      return `<video controls class="file-preview mb-2"><source src="${fileUrl}" type="video/${ext}"></video>`;
+    } 
+    else if (['mp3','wav','ogg'].includes(ext)) {
+      return `<audio controls class="d-block mb-2"><source src="${fileUrl}" type="audio/${ext}"></audio>`;
+    } 
+    else if (['pdf'].includes(ext)) {
+      return `<a href="${fileUrl}" target="_blank" class="d-block mb-2">📄 ${f}</a>`;
+    } 
+    else if (['doc','docx'].includes(ext)) {
+      return `<a href="${fileUrl}" target="_blank" class="d-block mb-2">📝 ${f}</a>`;
+    } 
+    else if (['xls','xlsx','csv'].includes(ext)) {
+      return `<a href="${fileUrl}" target="_blank" class="d-block mb-2">📊 ${f}</a>`;
+    } 
+    else {
+      return `<a href="${fileUrl}" target="_blank" class="d-block mb-2">📁 ${f}</a>`; // fallback
+    }
+  }).join('');
+}
+
+
+    // REGISTER
+    document.getElementById('register-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('fullName', document.getElementById('fullName').value.trim());
+      formData.append('username', document.getElementById('username').value.trim());
+      formData.append('email', document.getElementById('email').value.trim());
+      formData.append('password', document.getElementById('password').value.trim());
+      formData.append('dob', document.getElementById('dob').value);
+      formData.append('gender', document.getElementById('gender').value || '');
+      formData.append('profilePic', document.getElementById('profilePic').files[0]); // File
+      formData.append('country', document.getElementById('country').value.trim());
+      formData.append('interests', JSON.stringify(Array.from(document.getElementById('interests').selectedOptions).map(o => o.value)));
+      formData.append('bio', document.getElementById('bio').value.trim());
+      formData.append('skillLevel', document.getElementById('skillLevel').value);
+      formData.append('profession', document.getElementById('profession').value.trim());
+      formData.append('website', document.getElementById('website').value.trim());
+      formData.append('confirmPassword', document.getElementById('confirmPassword').value.trim());
+  
+      if(document.getElementById('password').value !== document.getElementById('confirmPassword').value){
+        showNotification("Passwords do not match", "danger");
+        return;
+      }
+
+      fetch(`${BASE_URL}/users`, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      })
+
+      .then(res => res.json())
+      .then(data => {
+        if(data.success) { 
+          showNotification("Registration successful", "success"); 
+          const username = data.username;
+          setUsername(username); // save username
+          showApp();
+          showSubSection('profile');  // force profile after registration
+          loadProfile();   // load their profile
+          loadFeed();} //load the feed
+        else showNotification(data.message || "Registration failed", "danger");
+      });
+    });
+    
+  // ---------- HELPER FUNCTION ----------
+  function getUsername() {
+    return sessionStorage.getItem('username');
+  }
+
+  function setUsername(username) {
+    sessionStorage.setItem('username', username);
+  }
+
+ function getUploadPath(file) {
+    if (!file) return 'default-avatar.png';
+
+    // If the file already includes the uploads folder, just append to BASE_URL once
+    if (file.startsWith('uploads/') || file.startsWith('/uploads/')) {
+        return `${BASE_URL}/${file.replace(/^\/?/, '')}`; 
+    }
+
+    // Otherwise, assume it's just the filename and prepend 'uploads/'
+    return `${BASE_URL}/uploads/${file}`;
+}
+
+
+
+// ---------- LOAD USER'S OWN POSTS (My Posts) ----------
+async function loadUserPosts() {
+  try {
+    const res = await fetch(`${BASE_URL}/my-posts`, { credentials: 'include' });
+    if (!res.ok) {
+      console.warn('Failed to load my posts', res.status);
+      return;
+    }
+    const posts = await res.json();
+    const postsDiv = document.getElementById('posts');
+    postsDiv.innerHTML = '';
+
+    if (!posts.length) {
+      postsDiv.innerHTML = `<p>You haven't posted anything yet. <button class="btn btn-sm btn-primary" onclick="showSubSection('create-post')">Create Post</button></p>`;
+      return;
+    }
+
+    posts.forEach(post => {
+      const postEl = document.createElement('div');
+      postEl.classList.add('post');
+      // Show edit/delete controls for user's own posts
+      postEl.innerHTML = `
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <p>${escapeHtml(post.content)}</p>
+            ${renderPostFiles(post.files)}
+            <small class="text-muted">Posted on ${new Date(post.createdAt).toLocaleString()}</small>
+          </div>
+          <div class="ms-2 text-end">
+            <button class="btn btn-sm btn-warning mb-1 edit-post-btn">Edit</button>
+            <button class="btn btn-sm btn-danger mb-1 delete-post-btn">Delete</button>
+            <div><small class="text-muted">Likes ${post.likesCount || 0} • Comments ${post.commentsCount || 0} • Shares ${post.sharesCount || 0}</small></div>
+          </div>
+        </div>
+      `;
+      postsDiv.appendChild(postEl);
+
+      // attach handlers
+      const editBtn = postEl.querySelector('.edit-post-btn');
+      editBtn.addEventListener('click', () => editPost(post._id, post.content));
+
+      const deleteBtn = postEl.querySelector('.delete-post-btn');
+      deleteBtn.addEventListener('click', () => {
+        if (confirm('Delete this post? This cannot be undone.')) deletePost(post._id);
+      });
+    });
+  } catch (err) {
+    console.error('loadUserPosts error', err);
+    showNotification('Failed to load your posts', 'danger');
+  }
+}
+
+// helper to edit a post (simple prompt UI)
+async function editPost(postId, currentContent) {
+  const newContent = prompt('Edit your post:', currentContent);
+  if (newContent === null) return; // cancelled
+  if (typeof newContent !== 'string' || !newContent.trim()) {
+    showNotification('Content cannot be empty', 'warning');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/posts/${postId}`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: newContent.trim() })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showNotification('Post updated', 'success');
+      await loadUserPosts();
+      await loadFeed();
+    } else {
+      showNotification(data.message || 'Update failed', 'danger');
+    }
+  } catch (err) {
+    console.error('editPost error', err);
+    showNotification('Could not update post', 'danger');
+  }
+}
+
+// helper to delete a post
+async function deletePost(postId) {
+  try {
+    const res = await fetch(`${BASE_URL}/posts/${postId}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showNotification('Post deleted', 'success');
+      await loadUserPosts();  // reload my posts section
+      await loadFeed();       // reload feed to reflect deletion
+    } else {
+      showNotification(data.message || 'Delete failed', 'danger');
+    }
+  } catch (err) {
+    console.error('deletePost error', err);
+    showNotification('Could not delete post', 'danger');
+  }
+}
+
+// small helper to escape content before inserting into innerHTML
+function escapeHtml(str) {
+  if (!str && str !== 0) return '';
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+
+// ---------- LOAD FOLLOWERS ----------
+async function loadFollowers() {
+    const res = await fetch(`${BASE_URL}/followers`, { credentials: 'include' });
+    const data = await res.json();
+    const div = document.getElementById('followers');
+    div.innerHTML = '';
+
+    // Show total count
+    const countEl = document.createElement('h6');
+    countEl.innerText = `Followers (${data.length})`;
+    div.appendChild(countEl);
+
+    if (!data.length) {
+        div.innerHTML += `<p>No followers yet. <button class="btn btn-sm btn-primary" onclick="showSubSection('search')">Search Users</button> to find people!</p>`;
+        return;
+    }
+
+    data.forEach(u => {
+        const userEl = document.createElement('div');
+        userEl.classList.add('d-flex', 'align-items-center', 'mb-2', 'border', 'p-2', 'rounded');
+        userEl.innerHTML = `
+            <img src="${u.profilePic ? getUploadPath(u.profilePic) : 'default-avatar.png'}" width="40" class="rounded-circle me-2">
+            <div><strong>${u.fullName}</strong> @${u.username}</div>
+        `;
+        div.appendChild(userEl);
+    });
+}
+
+// ---------- LOAD FOLLOWING ----------
+async function loadFollowing() {
+    const res = await fetch(`${BASE_URL}/following`, { credentials: 'include' });
+    const data = await res.json();
+    const div = document.getElementById('following');
+    div.innerHTML = '';
+
+    // Show total count
+    const countEl = document.createElement('h6');
+    countEl.innerText = `Following (${data.length})`;
+    div.appendChild(countEl);
+
+    if (!data.length) {
+        div.innerHTML += `<p>You are not following anyone yet. <button class="btn btn-sm btn-primary" onclick="showSubSection('search')">Search Users</button> to follow people!</p>`;
+        return;
+    }
+
+    data.forEach(u => {
+        const userEl = document.createElement('div');
+        userEl.classList.add('d-flex', 'align-items-center', 'mb-2', 'border', 'p-2', 'rounded');
+        userEl.innerHTML = `
+            <img src="${u.profilePic ? getUploadPath(u.profilePic) : 'default-avatar.png'}" width="40" class="rounded-circle me-2">
+            <div><strong>${u.fullName}</strong> @${u.username}</div>
+            <button class="btn btn-sm btn-danger ms-auto">Unfollow</button>
+        `;
+        // Unfollow button
+        const btn = userEl.querySelector('button');
+        btn.addEventListener('click', async () => {
+            const res = await fetch(`${BASE_URL}/follow`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ follower: getUsername(), following: u.username }),
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (data.success) {
+                showNotification(`Unfollowed ${u.username}`, 'success');
+                loadFollowing();
+                loadFeed(); // optional, refresh feed
+            } else {
+                showNotification(data.message || "Failed to unfollow", "danger");
+            }
+        });
+        div.appendChild(userEl);
+    });
+}
+
+
+  // ---------- SHOW PROFILE ----------
+  async function loadProfileByUsername() {
+    const username = getUsername();
+    if (!username) {
+      logout();
+      return;
+    }
+    const res = await fetch(`${BASE_URL}/users?q=${getUsername()}`);
+    const users = await res.json();
+
+    if (!users.length) {
+      logout();
+      return;
+    }
+    const user = users[0];
+    const profileDiv = document.getElementById('profile-info');
+    profileDiv.innerHTML = `
+      <div class="d-flex align-items-center">
+        ${user.profilePic ? `<img src="${getUploadPath(user.profilePic)}" width="60" class="me-3 rounded-circle">` : `<img src="default-avatar.png" width="60" class="me-3 rounded-circle">`}
+        <div>
+          <strong>${user.fullName}</strong> @${user.username}<br>
+          <small>${user.profession} | ${user.skillLevel}</small><br>
+          <p>${user.bio || ''}</p>
+          <small>Interests: ${user.interests || ''}</small>
+        </div>
+      </div>
+    `;
+  }
+
+ // ---------- LOAD FEED ----------
+async function loadFeed() {
+  const res = await fetch(`${BASE_URL}/feed`);
+  const feed = await res.json();
+
+  const feedDiv = document.getElementById('feed');
+  feedDiv.innerHTML = '';
+
+  if (!feed.length) {
+    feedDiv.innerHTML = "<p>No posts yet. Follow someone to see posts! <button class='btn btn-sm btn-primary' onclick=\"showSubSection('search')\">Search Users</button></p>";
+    return;
+  }
+
+  feed.forEach(post => {
+    const postEl = document.createElement('div');
+    postEl.classList.add('post');
+    
+    // Button states
+    const liked = post.likes?.includes(getUsername());
+    const shared = post.shares?.includes(getUsername());
+
+    postEl.innerHTML = `
+      <div class="d-flex align-items-center mb-2">
+        <img src="${post.profilePic ? getUploadPath(post.profilePic) : 'default-avatar.png'}" width="40" class="rounded-circle me-2">
+        <strong>${post.username}</strong>
+      </div>
+      <p>${post.content}</p>
+      ${renderPostFiles(post.files)}
+      <div class="d-flex justify-content-between mt-2">
+        <button class="btn btn-sm ${liked?'btn-primary':'btn-outline-primary'} like-btn">${liked?'Liked':'Like'} (${post.likes?.length||0})</button>
+        <button class="btn btn-sm ${shared?'btn-success':'btn-outline-success'} share-btn">${shared?'Shared':'Share'} (${post.shares?.length||0})</button>
+        <button class="btn btn-sm btn-outline-secondary comment-toggle-btn">Comments (${post.comments?.length||0})</button>
+      </div>
+      <div class="comments-section mt-2 d-none"></div>
+      <small class="text-muted">Posted on ${new Date(post.createdAt).toLocaleString()}</small>
+    `;
+
+    feedDiv.appendChild(postEl);
+
+    // LIKE button
+    postEl.querySelector('.like-btn').addEventListener('click', async ()=>{
+      try{
+        const url = `${BASE_URL}/posts/${post._id}/${liked?'unlike':'like'}`;
+        const r = await fetch(url,{method:'POST',credentials:'include'});
+        const data = await r.json();
+        if(data.success) loadFeed();
+      }catch(err){console.error(err);}
+    });
+
+    // SHARE button
+    postEl.querySelector('.share-btn').addEventListener('click', async ()=>{
+      try{
+        const url = `${BASE_URL}/posts/${post._id}/${shared?'unshare':'share'}`;
+        const r = await fetch(url,{method:'POST',credentials:'include'});
+        const data = await r.json();
+        if(data.success) loadFeed();
+      }catch(err){console.error(err);}
+    });
+
+    // COMMENTS toggle
+    const commentsSection = postEl.querySelector('.comments-section');
+    const toggleBtn = postEl.querySelector('.comment-toggle-btn');
+    toggleBtn.addEventListener('click', ()=>{
+      commentsSection.classList.toggle('d-none');
+      if(!commentsSection.classList.contains('d-none')) renderComments(post, commentsSection);
+    });
+  });
+}
+
+async function renderComments(post, container){
+  container.innerHTML = '';
+  const input = document.createElement('input');
+  input.className = 'form-control mb-2';
+  input.placeholder = 'Write a comment...';
+  container.appendChild(input);
+
+  input.addEventListener('keypress', async (e)=>{
+    if(e.key==='Enter' && input.value.trim()){
+      const res = await fetch(`${BASE_URL}/posts/${post._id}/comment`,{
+        method:'POST',
+        credentials:'include',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({content: input.value.trim()})
+      });
+      const data = await res.json();
+      if(data.success) loadFeed();
+    }
+  });
+
+  post.comments?.forEach(c=>{
+    const div = document.createElement('div');
+    div.className = 'border p-1 mb-1 rounded';
+    div.innerHTML = `<strong>${c.username}</strong>: ${c.content} <small class="text-muted">(${new Date(c.createdAt).toLocaleString()})</small>`;
+    
+    if(c.username===getUsername()){
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn btn-sm btn-warning ms-2';
+      editBtn.textContent = 'Edit';
+      editBtn.onclick = async ()=>{
+        const newContent = prompt('Edit comment:', c.content);
+        if(!newContent) return;
+        const res = await fetch(`${BASE_URL}/posts/${post._id}/comment/${c.commentId}`,{
+          method:'PUT',
+          credentials:'include',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({content:newContent})
+        });
+        const data = await res.json();
+        if(data.success) loadFeed();
+      };
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn btn-sm btn-danger ms-1';
+      delBtn.textContent = 'Delete';
+      delBtn.onclick = async ()=>{
+        const res = await fetch(`${BASE_URL}/posts/${post._id}/comment/${c.commentId}`,{
+          method:'DELETE', credentials:'include'
+        });
+        const data = await res.json();
+        if(data.success) loadFeed();
+      };
+
+      div.appendChild(editBtn);
+      div.appendChild(delBtn);
+    }
+
+    container.appendChild(div);
+  });
+}
+
+
+
+// ---------- SEARCH USERS ----------
+document.getElementById('searchUsers').addEventListener('input', async function() {
+  const q = this.value;
+  const resultsDiv = document.getElementById('search-results');
+  resultsDiv.innerHTML = '';
+
+  if (!q) return;
+
+  try {
+    const res = await fetch(`${BASE_URL}/users?q=${encodeURIComponent(q)}`, { credentials: 'include' });
+    if (!res.ok) throw new Error('Search failed');
+    const users = await res.json();
+
+    const followRes = await fetch(`${BASE_URL}/following`, { credentials: 'include' });
+    const followingList = followRes.ok ? await followRes.json() : [];
+    const followingSet = new Set((followingList || []).map(u => u.username));
+
+    for (const u of users) {
+      const userEl = document.createElement('div');
+      userEl.classList.add('d-flex', 'align-items-center', 'mb-2', 'border', 'p-2', 'rounded');
+
+      userEl.innerHTML = `
+        ${u.profilePic ? `<img src="${getUploadPath(u.profilePic)}" width="40" class="me-2 rounded-circle">` : ''}
+        <div><strong>${u.fullName}</strong> @${u.username}</div>
+      `;
+
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-sm ms-auto';
+      const isFollowing = followingSet.has(u.username);
+      btn.classList.add(isFollowing ? 'btn-danger' : 'btn-primary');
+      btn.innerText = (u.username === getUsername()) ? 'You' : (isFollowing ? 'Unfollow' : 'Follow');
+
+      if (u.username === getUsername()) {
+        btn.disabled = true;
+        btn.classList.remove('btn-primary','btn-danger');
+        btn.classList.add('btn-secondary');
+      } else {
+        btn.addEventListener('click', async () => {
+          const currentlyFollowing = followingSet.has(u.username);
+          const method = currentlyFollowing ? 'DELETE' : 'POST';
+
+          try {
+            const r = await fetch(`${BASE_URL}/follow`, {
+              method,
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ follower: getUsername(), following: u.username })
+            });
+            const data = await r.json();
+            if (!r.ok || !data.success) {
+              showNotification(data.message || 'Action failed', 'danger');
+              return;
+            }
+
+            if (currentlyFollowing) {
+              followingSet.delete(u.username);
+              btn.innerText = 'Follow';
+              btn.classList.remove('btn-danger');
+              btn.classList.add('btn-primary');
+              showNotification(`Unfollowed ${u.username}`, 'success');
+            } else {
+              followingSet.add(u.username);
+              btn.innerText = 'Unfollow';
+              btn.classList.remove('btn-primary');
+              btn.classList.add('btn-danger');
+              showNotification(`You are now following ${u.username}`, 'success');
+            }
+
+            loadFollowing();
+            loadFollowers();
+            loadFeed();
+          } catch (err) {
+            console.error(err);
+            showNotification('Network error', 'danger');
+          }
+        });
+      }
+
+      userEl.appendChild(btn);
+      resultsDiv.appendChild(userEl);
+    }
+  } catch (err) {
+    console.error(err);
+    showNotification('Search failed', 'danger');
+  }
+});
+
+// Helper
+async function checkIfFollowing(username) {
+  const res = await fetch(`${BASE_URL}/following`, { credentials: 'include' });
+  const data = await res.json();
+  return data.some(u => u.username === username);
+}
+
+  // ---------- SEARCH POSTS ----------
+  document.getElementById('searchPosts').addEventListener('input', async function() {
+    const q = this.value;
+    if (!q) {
+      loadFeed(); // show normal feed if search empty
+      return;
+    }
+
+    const res = await fetch(`${BASE_URL}/contents?q=${q}`);
+    const posts = await res.json();
+
+    const feedDiv = document.getElementById('feed');
+    feedDiv.innerHTML = '';
+
+    posts.forEach(post => {
+      const postEl = document.createElement('div');
+      postEl.classList.add('post');
+      postEl.innerHTML = `
+        <p>${post.content}</p>
+        ${renderPostFiles(post.files)}
+        <small class="text-muted">Posted on ${new Date(post.createdAt).toLocaleString()}</small>
+      `;
+      feedDiv.appendChild(postEl);
+    });
+  });
+
+  // ---------- LOGIN HOOK ----------
+  document.getElementById('login-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+
+    const res = await fetch(`${BASE_URL}/login`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include', 
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if(data.success) {
+      setUsername(data.username);
+      showApp();
+      showSubSection('feed');
+      await loadProfile();
+      await loadFeed();
+    } else {
+      showNotification(data.message || "Login failed", "danger");
+    }
+  });
+
+  async function loadProfile() {
+  const res = await fetch(`${BASE_URL}/profile`, { credentials: 'include' });
+  if (!res.ok) {
+    // not logged in or failed
+    console.warn('Profile load failed', res.status);
+    return;
+  }
+  const data = await res.json();
+
+  if (!data.success) return;
+
+  const user = data.user;
+
+  document.getElementById("profile-name").innerText = user.fullName;
+  document.getElementById("profile-bio").innerText = user.bio || "No bio yet";
+
+  // Profile picture
+  const img = document.getElementById("profile-picture");
+  img.src = user.profilePic ? getUploadPath(user.profilePic) : "default-avatar.png";
+
+  // Fill edit modal
+  document.getElementById("edit-fullname").value = user.fullName;
+  document.getElementById("edit-bio").value = user.bio || "";
+
+  // SETTINGS TAB
+  document.getElementById("settings-email").value = user.email;
+  document.getElementById("settings-username").value = user.username;
+  document.getElementById("settings-fullname").value = user.fullName;
+  document.getElementById("settings-dob").value = user.dob || "";
+  document.getElementById("settings-country").value = user.country || "";
+  document.getElementById("settings-gender").value = user.gender || "";
+  document.getElementById("settings-bio").value = user.bio || "";
+  document.getElementById("settings-skillLevel").value = user.skillLevel || "Beginner";
+  document.getElementById("settings-profession").value = user.profession || "";
+  document.getElementById("settings-website").value = user.website || "";
+  
+  // Interests
+  const interestsSelect = document.getElementById("settings-interests");
+  Array.from(interestsSelect.options).forEach(opt => {
+    opt.selected = user.interests?.includes(opt.value);
+  });
+
+ // Attach tab click events
+  document.getElementById("posts-tab").addEventListener("click", loadUserPosts);
+  document.getElementById("followers-tab").addEventListener('click', loadFollowers);
+  document.getElementById("following-tab").addEventListener('click', loadFollowing);
+  
+
+  // **Automatically load posts on profile open**
+  loadUserPosts();
+  loadFollowers();
+  loadFollowing();
+
+}
+
+async function updateProfile() {
+  const body = {
+    fullName: document.getElementById("edit-fullname").value,
+    bio: document.getElementById("edit-bio").value
+  };
+
+  const res = await fetch(`${BASE_URL}/profile`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    loadProfile();
+    showNotification("Profile updated", "success");
+  } else {
+    showNotification(data.message || "Update failed", "danger");
+  }
+ 
+}
+
+document.getElementById('profile-settings-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const body = {
+    fullName: document.getElementById("settings-fullname").value,
+    dob: document.getElementById("settings-dob").value,
+    country: document.getElementById("settings-country").value,
+    gender: document.getElementById("settings-gender").value,
+    bio: document.getElementById("settings-bio").value,
+    skillLevel: document.getElementById("settings-skillLevel").value,
+    profession: document.getElementById("settings-profession").value,
+    website: document.getElementById("settings-website").value,
+    interests: Array.from(document.getElementById("settings-interests").selectedOptions).map(o => o.value)
+  };
+
+  // Change password
+  const newPassword = document.getElementById("settings-newPassword").value;
+  const confirmPassword = document.getElementById("settings-confirmPassword").value;
+  if(newPassword) {
+    if(newPassword !== confirmPassword) {
+      showNotification("Passwords do not match", "danger");
+      return;
+    }
+    body.password = newPassword;
+  }
+
+  const res = await fetch(`${BASE_URL}/profile`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json();
+  if(data.success) {
+    showNotification("Settings updated", "success");
+    await loadProfile();
+  } else {
+    showNotification(data.message || "Update failed", "danger");
+  }
+});
+
+async function uploadProfilePicture() {
+  const fileInput = document.getElementById("edit-picture");
+  if (!fileInput.files.length) {
+    showNotification("Choose a file first", "warning");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("profilePic", fileInput.files[0]);
+
+  const res = await fetch(`${BASE_URL}/profile/picture`, {
+    method: "POST",
+    credentials: "include",
+    body: formData
+  });
+
+  const data = await res.json();
+  
+  if (data.success) {
+    await loadProfile();
+    showNotification("Profile picture updated", "success");
+  } else {
+    showNotification(data.message || "Upload failed", "danger");
+  }
+
+}
+
+  // ---------- POST CREATION HOOK ----------
+  document.getElementById('post-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = this; // reference to the form being submitted
+    const formData = new FormData(form); // automatically includes content + file
+
+    try {
+        const res = await fetch(`${BASE_URL}/contents`, {
+            method: "POST",
+            body: formData,
+            credentials: 'include'
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            showNotification("Post created!", "success");
+            form.reset(); // clears textarea & file
+            loadFeed(); 
+           /* if (!document.getElementById('profile-section').classList.contains('hidden')) {
+              loadUserPosts();*/
+              if (!document.getElementById('profile-section').classList.contains('hidden')) {
+              loadUserPosts();
+            }
+            
+        } else {
+            showNotification("Error: " + (data.message || "Failed to create post"), "danger");
+        }
+    } catch (err) {
+        console.error(err);
+        showNotification("Error: Could not connect to server", "danger");
+    }
+});
+
+
+
+  // ---------- LOGOUT HOOK ----------
+  function logout() {
+    fetch(`${BASE_URL}/login`, { method: 'DELETE', credentials: 'include'})
+    .then(res => res.json())
+    .then(data => {
+      sessionStorage.clear();
+        // hide all sections
+      document.getElementById('app-section').classList.add('hidden');
+      document.getElementById('profile-section').classList.add('hidden');
+      document.getElementById('create-post-section').classList.add('hidden');
+      document.getElementById('search-section').classList.add('hidden');
+      document.getElementById('feed-section').classList.add('hidden');
+
+      // clear inner HTML of dynamic content
+      document.getElementById('feed').innerHTML = '';
+      document.getElementById('profile-info').innerHTML = '';
+      document.getElementById('search-results').innerHTML = '';
+      document.getElementById("profile-name").innerText = "";
+      document.getElementById("profile-bio").innerText = "";
+      document.getElementById("profile-picture").src = "default-avatar.png";
+      
+      showLogin();
+
+      // Show notification
+      showNotification("Logged out successfully", "success");
+    });
+  }
+
+
+</script>
+
+</body>
+</html>

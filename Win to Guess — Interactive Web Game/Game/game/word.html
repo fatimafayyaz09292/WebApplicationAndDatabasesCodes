@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crack The Password | Guess To Win</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="word-game-page">
+
+<header class="navbar">
+  <h2 class="logo">Guess To Win</h2>
+  <ul class= "nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../leaderboard/leaderboard.html">Leaderboard</a></li>
+    <li><a href="../settings/settings.html">Settings</a></li>
+  </ul>
+</header>
+<main>
+<div class="container game-container">
+  <h2 class="game-title">Phase 2: Crack the Password</h2>
+
+  <div id="messageBox" class="message-box"></div>
+
+  <div id="modeSelection" class="mode-box">
+    <h3>Select Challenge Type</h3>
+    <button id="wordModeBtn" class="btn">Word Guess Mode</button>
+    <button id="puzzleModeBtn" class="btn">Puzzle Clue Mode</button>
+  </div>
+
+  <div id="gameArea" class="hidden">
+    
+    <div class="game-info">
+      <p><b>Category:</b> <span id="categoryDisplay">-</span></p>
+      <p><b>Clue:</b> <span id="clueDisplay">-</span></p>
+      <p><b>Word Length:</b> <span id="wordLength">-</span></p>
+      <p><b>Lives:</b> <span id="livesDisplay">-</span></p>
+      <p><b>Timer:</b> <span id="timerDisplay">-</span></p>
+    </div>
+
+    <input id="guessInput" type="text" placeholder="Enter your guess...">
+    <button id="submitGuessBtn" class="btn">Submit</button>
+
+  </div>
+</div>
+</main>
+
+<script src="../js/main.js"></script>
+<script>
+  initWordGame(); // Call main.js function
+</script>
+  <footer>
+    <p>© 2025 GuessToWin | Designed by noor</p>
+  </footer>
+</body>
+</html>

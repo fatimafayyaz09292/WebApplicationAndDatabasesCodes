@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings | Guess to Win</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="settings-page">
+  <nav class="navbar">
+    <div class="logo">Guess to Win</div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../leaderboard/leaderboard.html">Leaderboard</a></li>
+      <li><a href="settings.html" class="active">Settings</a></li>
+    </ul>
+  </nav>
+
+  <main class="settings-container">
+    <h1>Settings & Profile</h1>
+    <div id="messageBox" class="message hidden"></div>
+
+    <section class="profile-section">
+      <h2>Profile Info</h2>
+      <form id="profileForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username">
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" disabled>
+
+        <label for="nickname">Nickname:</label>
+        <input type="text" id="nickname" disabled>
+
+        <label for="city">City:</label>
+        <input type="text" id="city" disabled>
+
+        <label for="country">Country:</label>
+        <input type="text" id="country" disabled>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" disabled>
+
+        <label for="role">Role:</label>
+        <input type="text" id="role" disabled>
+
+        <button type="button" id="updateUsernameBtn" class="btn secondary">Save</button>
+      </form>
+    </section>
+
+    <section class="password-section">
+      <h2>Change Password</h2>
+      <form id="passwordForm">
+        <label for="oldPassword">Old Password:</label>
+        <input type="password" id="oldPassword">
+
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword">
+
+        <label for="confirmNewPassword">Confirm New Password:</label>
+        <input type="password" id="confirmNewPassword">
+
+        <button type="button" id="changePasswordBtn" class="btn secondary">Change Password</button>
+      </form>
+    </section>
+
+    <section class="game-settings">
+      <h2>Game Preferences</h2>
+      <form id="gameSettingsForm">
+        <label for="difficulty">Difficulty Level:</label>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+
+        <label for="lives">Number of Lives:</label>
+        <select id="lives" disabled>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="7">7</option>
+        </select>
+
+        <label for="timer">Time Pressure (seconds):</label>
+        <input type="number" id="timer" placeholder="Default: 60">
+
+        <button type="button" id="saveSettingsBtn" class="btn">Save Settings</button>
+      </form>
+    </section>
+
+    <button id="logoutBtn" class="btn start">Logout</button>
+  </main>
+
+  <footer>&copy; 2025 Guess to Win</footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
